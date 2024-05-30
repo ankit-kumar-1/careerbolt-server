@@ -1,7 +1,7 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import { User } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
-import { sendToken } from "../utils/jwtToken.js";
+import generateToken from "../utils/generateToken.js";
 
 export const register = catchAsyncErrors(async (req, res, next) => {
   const { name, email, phone, password, role } = req.body;
@@ -19,7 +19,7 @@ export const register = catchAsyncErrors(async (req, res, next) => {
     password,
     role,
   });
-  sendToken(user, 201, res, "User Registered!");
+  generateToken(user, 201, res, "User Registered!");
 });
 
 export const login = catchAsyncErrors(async (req, res, next) => {
@@ -40,7 +40,7 @@ export const login = catchAsyncErrors(async (req, res, next) => {
       new ErrorHandler(`User with provided email and ${role} not found!`, 404)
     );
   }
-  sendToken(user, 201, res, "User Logged In!");
+  generateToken(user, 201, res, "User Logged In!");
 });
 
 export const logout = catchAsyncErrors(async (req, res, next) => {
